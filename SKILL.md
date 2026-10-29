@@ -72,6 +72,8 @@ Xem tất cả: `mau-broll\_tat-ca.png`. Mỗi mẫu là 1 class trong `reel_eng
 | `BChatTask` | full | giao việc cho AI qua chat | title, user, items, done, agent |
 | `BBugFix` | full | lỗi, trục trặc | title, big, sub, count |
 | `BAutomate` | full | tự động hoá | title, big, inp, out, foot |
+| `BScale` | full | cân nặng giảm từ A → B kg (bàn cân 3D, số chạy, thẻ "-N KG"); start == end → chững cân | title, start, end, unit, big, foot, badge |
+| `BCalo` | full | thâm hụt calo: cột ăn vào vs cột đốt đi + "THÂM HỤT N CALO" | title, eat, burn, eat_label, burn_label, eat_txt, burn_txt, result |
 
 **Quy tắc thư viện (quan trọng nhất):**
 1. **Nội dung có ý chưa có mẫu hợp → VẼ MẪU MỚI** đúng ý (không gượng ép mẫu cũ). Viết class mới trong `reel_engine.py` cùng kiểu: nền đen; chỉ trắng + vàng #FFC400 (+ sắc tối của chúng cho mặt bên); khối 3D (`t3d`, `put3`, `F3.block/tilt/coin/iso_box/extrude/soft_shadow`, `robot()`, `person()`); có chuyển động bên trong (phần tử bật lần lượt, xoay, nảy); hàm `sfx()` trả danh sách tiếng; chữ dài phải tự co (`fit_font`); kẹp kích thước tối thiểu khi phần tử bật ra từ 0.
@@ -93,6 +95,7 @@ Người dùng có cảnh riêng: quay sản phẩm, quay màn hình app, ảnh 
 | `sticker` | tách vật thể khỏi nền + viền trắng kiểu nhãn dán, lơ lửng trên nền tối | ảnh sản phẩm, đồ vật (PNG trong suốt càng đẹp) | ẩn |
 | `pip` | cảnh toàn màn hình + mặt người nói trong bong bóng tròn viền vàng ở góc | demo dài mà vẫn cần mặt người nói | **giữ** |
 | `montage` | nhiều cảnh/ảnh cắt nhanh 0,45–0,8 s, chớp trắng nhẹ giữa các cảnh | liệt kê nhiều thứ, "rất nhiều khách / đơn / sản phẩm" | ẩn |
+| `cards` | nhiều ảnh lần lượt, mỗi ảnh GIỮ NGUYÊN KHUNG trong thẻ viền vàng nghiêng 3D, nền là ảnh đó làm mờ, `items` = nhãn vàng dưới từng ảnh; ≥1,3 s/ảnh | **ảnh trước/sau ghép đôi**, ảnh vuông, ảnh thành tích (montage/full sẽ cắt mất một nửa) | ẩn |
 | `auto` (mặc định) | tự chọn: nhiều ảnh → polaroid; nhiều video → montage; PNG trong suốt → sticker; ảnh → card; video dọc → full/phone; video ngang → card/split | | |
 
 Tham số khác: `inpoint` (`"auto"` = tự chọn đoạn NÉT + có chuyển động vừa, tránh rung và 0,3 s đầu; hoặc số giây), `focus` (0–1, vị trí cắt ngang khi cảnh ngang đưa vào khung dọc), `label` (nhãn vàng nhỏ), `title`, `items` (chữ dưới ảnh polaroid), `audio` (0 = tắt tiếng cảnh chèn; 0,2–0,5 = giữ tiếng nền nhỏ cho thật), `motion` (`push` / `pull` / `pan`), `captions` (ép giữ/ẩn phụ đề).

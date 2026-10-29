@@ -1205,6 +1205,101 @@ class BBeforeAfter:                                   # truoc / sau: man chia do
         pan = F3.extrude(mix, s(26), (8, 8, 8), dx=0.0, dy=1.0, gl=False)
         put3(cv, pan, s(540), s(1060), a=clamp(t / 0.2), ay=lerp(-30, -8, e_out(t / 0.6)) + 2 * math.sin(t * 1.4), ax=8)
 
+# ------------------------------------------------------------------ B-roll FITNESS / giam can (them 28/10/2026, clip "fitness vd 1-2")
+class BScale:                                         # can suc khoe 3D: so tren man hinh chay tu can cu -> can moi, the "-N KG" bat ra
+    layout = "full"
+    def __init__(self, title="Sau 4 tháng", start=54, end=45, unit="KG", big="", foot="", badge=""):
+        self.title, self.start, self.end, self.unit, self.big, self.foot = title, float(start), float(end), unit, big, foot
+        self.badge = badge                            # chu thay cho "-N KG"; start == end -> so nhay qua lai (chung can)
+    def sfx(self, d):
+        return ([(0.0, "whoosh", 0.06), (0.45, "thud", 0.07)] + [(0.7 + i * 0.1, "tick", 0.035) for i in range(12)]
+                + [(1.95, "ding", 0.09), (2.1, "pop", 0.06)])
+    def draw(self, cv, t, d):
+        dr = ImageDraw.Draw(cv)
+        text(cv, self.title, fit_font(SERIF, 104, self.title, s(960)), s(540), s(250), WHITE, a=e_io(t / 0.4))
+        if self.big:
+            put3(cv, t3d(self.big, BLK(110), YEL, 18), s(540), s(400), 0.6 + 0.4 * e_back((t - 0.15) / 0.35), clamp((t - 0.15) * 5))
+        u = e_io((t - 0.7) / 1.2)
+        num = "%d" % round(lerp(self.start, self.end, u))
+        if self.start == self.end and t > 0.7: num = "%d" % (self.start + (int(t * 5) % 2))    # chung can: nhay 60 <-> 61
+        pw = s(760); face = Image.new("RGBA", (pw, pw), (0, 0, 0, 0)); fd = ImageDraw.Draw(face)
+        rr(fd, (0, 0, pw - 1, pw - 1), s(130), fill=(238, 238, 238, 255))
+        rr(fd, (s(28), s(28), pw - s(28), pw - s(28)), s(112), outline=(200, 200, 200, 255), width=s(4))
+        sx0, sy0, sx1, sy1 = s(140), s(80), pw - s(140), s(310)            # man hinh so
+        rr(fd, (sx0, sy0, sx1, sy1), s(34), fill=(14, 14, 14, 255))
+        f = BLK(170); l, tt, r, b = fd.textbbox((0, 0), num, font=f)
+        fu = BOLD(50); ul, ut, ur, ub = fd.textbbox((0, 0), self.unit, font=fu)
+        tw = (r - l) + s(16) + (ur - ul); x0 = (sx0 + sx1) / 2 - tw / 2
+        fd.text((x0 - l, (sy0 + sy1) / 2 - (b - tt) / 2 - tt), num, font=f, fill=YEL + (255,))
+        fd.text((x0 + (r - l) + s(16) - ul, (sy0 + sy1) / 2 + (b - tt) / 2 - (ub - ut) - ut), self.unit, font=fu, fill=WHITE + (255,))
+        if t > 0.45:                                                       # hai ban chan buoc len can
+            k = e_back((t - 0.45) / 0.2)
+            for sg in (-1, 1):
+                fx, fy = pw / 2 + sg * s(120), s(530)
+                rw, rh = s(70) * k, s(130) * k
+                if rw > 2: fd.ellipse([fx - rw, fy - rh + s(20), fx + rw, fy + rh], fill=(200, 200, 200, 255))
+                for j in range(5):
+                    tr = max(1.0, s(16 - j * 2) * k); tx = fx - sg * (j - 2) * s(26) * k; ty = fy - rh - s(10) + abs(j - 2) * s(8)
+                    fd.ellipse([tx - tr, ty - tr, tx + tr, ty + tr], fill=(200, 200, 200, 255))
+        scl = F3.extrude(face, s(46), SILV, dx=0.0, dy=1.0)
+        cv.alpha_composite(F3.soft_shadow(s(680), s(70), 120, s(22)), (s(200), s(1360)))
+        jolt = s(14) * math.sin((t - 0.45) * 40) * math.exp(-(t - 0.45) * 9) if t > 0.45 else 0
+        put3(cv, scl, s(540), s(1000) + jolt, sc=0.6 + 0.4 * e_back((t - 0.1) / 0.4), a=clamp(t / 0.2),
+             ay=5 * math.sin(t * 1.5), ax=lerp(38, 20, e_out(t / 0.7)))
+        delta = self.end - self.start
+        if t > 1.9 and (self.badge or abs(delta) >= 0.5):
+            lab = self.badge or ("-" if delta < 0 else "+") + "%d %s" % (round(abs(delta)), self.unit)
+            put3(cv, t3d(lab, fit_font(BLK, 150, lab, s(900)), YEL, 24), s(540), s(1560), 0.6 + 0.4 * e_back((t - 1.9) / 0.35), clamp((t - 1.9) * 5),
+                 ay=-8 + 4 * math.sin(t * 2), ax=-6)
+        if self.foot: text(cv, self.foot, fit_font(SERIF, 64, self.foot, s(960)), s(540), s(1760), WHITE, a=e_io((t - 2.1) / 0.4))
+
+class BCalo:                                          # tham hut calo: cot AN VAO (trang) vs cot DOT DI (vang) moc len, phan chenh danh dau + the ket qua
+    layout = "full"
+    def __init__(self, title="Thâm hụt calo", eat=2000, burn=2500, eat_label="ĂN VÀO", burn_label="ĐỐT ĐI", eat_txt="", burn_txt="",
+                 result="", unit="calo"):
+        self.title, self.eat, self.burn, self.eat_label, self.burn_label = title, float(eat), float(burn), eat_label, burn_label
+        self.eat_txt, self.burn_txt, self.unit = eat_txt, burn_txt, unit
+        self.result = result or "THÂM HỤT %s %s" % (counter(abs(self.burn - self.eat)), unit.upper())
+    def sfx(self, d):
+        return ([(0.0, "whoosh", 0.06), (0.4, "pop", 0.055), (0.8, "pop", 0.055)] + [(0.5 + i * 0.09, "tick", 0.03) for i in range(10)]
+                + [(1.55, "swish", 0.06), (1.9, "ding", 0.09)])
+    def draw(self, cv, t, d):
+        dr = ImageDraw.Draw(cv)
+        text(cv, self.title, fit_font(SERIF, 104, self.title, s(960)), s(540), s(250), WHITE, a=e_io(t / 0.4))
+        base, hmax, bw = s(1380), s(760), s(240); vmax = max(self.eat, self.burn, 1)
+        cv.alpha_composite(F3.soft_shadow(s(820), s(60), 110, s(18)), (s(100), base + s(30)))
+        dr.line([(s(110), base + s(6)), (s(900), base + s(6))], fill=(70, 70, 70, 255), width=s(4))
+        tops = []
+        bars = ((s(290), self.eat, self.eat_label, self.eat_txt, WHITE, SILV), (s(680), self.burn, self.burn_label, self.burn_txt, YEL, GOLD))
+        for i, (x, val, lab, txt, col, side) in enumerate(bars):
+            t0 = 0.4 + i * 0.4
+            q = e_back((t - t0) / 0.45, 1.2)
+            full = hmax * val / vmax; tops.append(base - full)
+            text(cv, lab, fit_font(BLK, 50, lab, s(330)), x, base + s(125), WHITE, a=clamp((t - t0) * 4), shadow=False)
+            if q <= 0: continue
+            h = max(6, int(full * q))
+            blk = F3.block(bw, h, s(18), col, s(26), side)
+            cv.alpha_composite(blk, (int(x - blk.width / 2 + s(13)), int(base - h)))
+            c = e_io((t - t0) / 0.8)
+            shown = txt if (txt and c >= 1) else counter(val * c)
+            put3(cv, t3d(shown, fit_font(BLK, 76, shown, s(360)), col, 12), x, base - h - s(70), ay=-6)
+        p = e_out((t - 1.55) / 0.35)
+        if p > 0 and len(tops) == 2:
+            ye, yb = tops
+            xa, xb = s(290) + bw / 2, s(680) + bw / 2
+            xe = lerp(xa, xb + s(30), p)
+            for xx in range(int(xa), int(xe), s(34)):                     # vach dut muc "an vao" keo sang cot dot
+                dr.line([(xx, ye), (min(xe, xx + s(18)), ye)], fill=YEL + (255,), width=s(6))
+            if p >= 1 and abs(yb - ye) > s(20):
+                bx = xb + s(40)
+                dr.line([(bx, yb), (bx + s(20), yb), (bx + s(20), ye), (bx, ye)], fill=WHITE + (255,), width=s(6))
+                g = "-" + counter(abs(self.burn - self.eat))
+                text(cv, g, fit_font(BLK, 64, g, s(190)), bx + s(125), (ye + yb) / 2, WHITE)
+        q = e_back((t - 1.9) / 0.35)
+        if q > 0:
+            put3(cv, t3d(self.result, fit_font(BLK, 90, self.result, s(940)), YEL, 16), s(540), s(1640), 0.6 + 0.4 * q, clamp((t - 1.9) * 5),
+                 ay=-8 + 4 * math.sin(t * 2))
+
 # ------------------------------------------------------------------ B-ROLL CUA NGUOI DUNG: canh quay / anh that (them 16/10/2026)
 # Nguyen tac (tong hop tu cac huong dan edit video ngan): moi canh chen 2-4 s, CU THE dung cau dang noi; khong chen lien tuc
 # thanh phim ghep; chu the de giua khung doc; canh lech ti le -> nen mo; anh tinh luon co chuyen dong; quay man hinh -> khung
@@ -1361,6 +1456,7 @@ class BUser:
         elif k == "phone": self.m = [Media(self.srcs[0], s(640), s(1280), "fill", self.focus, self.inpoint, d)]
         elif k == "sticker": self.m = [Media(self.srcs[0], W * 0.8, H * 0.5, "fit", 0.5, 0, d)]
         elif k == "polaroid": self.m = [Media(x, s(560), s(640), "fill", self.focus, 0, d) for x in self.srcs[:5]]
+        elif k == "cards": self.m = [Media(x, W * 0.88, H * 0.60, "fit", self.focus, self.inpoint, d / max(1, len(self.srcs))) for x in self.srcs]
         else:                                                   # montage
             seg = max(0.45, d / max(1, len(self.srcs)))
             self.m = [Media(x, W * 1.06, H * 1.06, "fill", self.focus, self.inpoint, seg) for x in self.srcs]
@@ -1374,6 +1470,8 @@ class BUser:
         if k == "polaroid": ev += sum(([(i * (d - 0.6) / max(1, len(self.m)) + 0.05, "click", 0.06), (i * (d - 0.6) / max(1, len(self.m)) + 0.1, "pop", 0.05)] for i in range(len(self.m))), [])
         elif k == "montage":
             seg = max(0.45, d / max(1, len(self.m))); ev += [(i * seg, "swish", 0.04) for i in range(1, len(self.m))]
+        elif k == "cards":
+            seg = d / max(1, len(self.m)); ev += [(0.35, "pop", 0.05)] + sum(([(i * seg, "swish", 0.045), (i * seg + 0.2, "pop", 0.045)] for i in range(1, len(self.m))), [])
         elif k in ("sticker", "phone", "card"): ev += [(0.35, "pop", 0.05)]
         if self.label: ev.append((0.5, "pop_soft", 0.04))
         return ev
@@ -1447,6 +1545,23 @@ class BUser:
             sh = F3.soft_shadow(rot.width * 0.85, s(60), 120, s(18))
             x = s(540 + ((i % 3) - 1) * 60); y = s(960 + (i % 2) * 40) - (1 - e_out(lt / 0.35)) * s(500)
             put(out, sh, x, y + rot.height * 0.45); put(out, rot, x, y, sc=1.25 - 0.25 * p)
+        return out
+    def _cards(self, fr, t, d):
+        """Nhieu anh GIU NGUYEN KHUNG (anh truoc/sau ghep doi, anh vuong) - lan luot tung the vien vang nghieng 3D, nen la anh do lam mo."""
+        n = len(self.m); seg = d / max(1, n); i = min(n - 1, int(t / seg)); lt = t - i * seg
+        img = self.m[i].frame(lt); out = blur_bg(img)
+        fg = kb(img, lt, seg, "push", 1.0, 1.04, i).convert("RGBA"); fg.putalpha(rmask(fg.width, fg.height, s(34)))
+        fr_ = Image.new("RGBA", (fg.width + s(16), fg.height + s(16)), (0, 0, 0, 0))
+        ImageDraw.Draw(fr_).rounded_rectangle([0, 0, fr_.width - 1, fr_.height - 1], radius=s(40), fill=YEL + (255,)); fr_.alpha_composite(fg, (s(8), s(8)))
+        blk = F3.extrude(fr_, s(18), GOLD, dx=0.0, dy=1.0, gl=False)
+        if self.title: text(out, self.title, fit_font(SERIF, 96, self.title, s(960)), s(540), s(300), WHITE, a=e_io(t / 0.35))
+        p = e_back(lt / 0.3) if i > 0 else 1.0
+        sg = -1 if i % 2 == 0 else 1
+        put3(out, blk, s(540), s(1060) + s(10) * math.sin(t * 1.7), sc=(0.85 + 0.15 * e_back(t / 0.35)) * (0.8 + 0.2 * p),
+             ay=sg * lerp(22, 6, e_out(lt / 0.6)) + 2 * math.sin(t * 1.3), ax=6)
+        if i < len(self.items) and self.items[i]:
+            pl = pill(self.items[i]); put(out, pl, s(540), s(1720) + (1 - e_out((lt - 0.3) / 0.3)) * s(40), a=clamp((lt - 0.3) / 0.2))
+        if i > 0 and lt < 0.07: out.alpha_composite(Image.new("RGBA", (W, H), (255, 255, 255, 110)))
         return out
     def _montage(self, fr, t, d):
         n = len(self.m); seg = max(0.45, d / max(1, n)); i = min(n - 1, int(t / seg)); lt = t - i * seg

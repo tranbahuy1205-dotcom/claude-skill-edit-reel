@@ -5,8 +5,8 @@
 - **Cắt:** bỏ khoảng lặng, ậm ừ, câu vấp; câu nói nhiều lần thì giữ lần trôi chảy nhất. Tăng tốc nhẹ ×1,1–1,2.
 - **Hình:** chỉnh màu, làm mịn da. Tách phông bằng mô hình cho video (RobustVideoMatting). Nền xen kẽ: phông thật, nền tối, chữ to nằm sau đầu.
 - **Chữ:** hiện theo từng cụm, 2 font (Inter Tight + Playfair nghiêng), 3 màu trắng – đen – vàng. Chữ mảnh có hiệu ứng sang, chữ đậm có hiệu ứng năng động.
-- **Minh hoạ khối 3D:** thư viện 25 mẫu (bộ đếm số, biểu đồ doanh thu, đơn hàng về, tiền về, lịch, đồng hồ, phễu, tên lửa, đội robot AI agent, khung chat giao việc…). Nội dung của bạn chưa có mẫu hợp thì Claude **tự vẽ mẫu mới** và giữ lại cho video sau.
-- **Cảnh quay / ảnh của chính bạn:** chèn được với 8 kiểu đặt cảnh: toàn màn hình, chia đôi, thẻ nghiêng 3D, khung điện thoại, ảnh polaroid, nhãn dán, bong bóng mặt, dồn nhanh nhiều cảnh. Tự chọn đoạn nét nhất, chỉnh màu cho khớp video chính.
+- **Minh hoạ khối 3D:** thư viện 27 mẫu (bộ đếm số, biểu đồ doanh thu, đơn hàng về, tiền về, lịch, đồng hồ, phễu, tên lửa, đội robot AI agent, khung chat giao việc, bàn cân giảm kg, thâm hụt calo…). Nội dung của bạn chưa có mẫu hợp thì Claude **tự vẽ mẫu mới** và giữ lại cho video sau.
+- **Cảnh quay / ảnh của chính bạn:** chèn được với 9 kiểu đặt cảnh: toàn màn hình, chia đôi, thẻ nghiêng 3D, khung điện thoại, ảnh polaroid, nhãn dán, bong bóng mặt, dồn nhanh nhiều cảnh, chuỗi thẻ giữ nguyên khung (hợp với ảnh trước/sau). Tự chọn đoạn nét nhất, chỉnh màu cho khớp video chính.
 - **Âm thanh:** nhiều hiệu ứng tự tổng hợp, nhạc nền −15 dB so với giọng, cân âm chuẩn mạng xã hội −14 LUFS.
 - **Xuất file:** 1080×1920; có bản nháp 720p để duyệt trước.
 
