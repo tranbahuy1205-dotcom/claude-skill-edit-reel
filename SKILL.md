@@ -106,6 +106,15 @@ Tự động làm sẵn: cảnh **vào sớm hơn từ khoá 0,12 s**; chỉnh m
 
 
 
+## VIDEO NGANG 16:9 kiểu HƯỚNG DẪN (`ngang_engine.py`, thêm 30/10/2026)
+Video quay NGANG có nói về màn hình/phần mềm, người dùng gửi ảnh chụp màn hình → dùng `ngang_engine.py` thay `reel_engine.py`, rồi vẫn chạy `mix_engine.py`. Cấu hình mẫu: `du_an_ngang_mau.py`.
+- **Thu gọn người:** ở đoạn nói về màn hình, người tách nền thu còn 70% về góc phải, ảnh chụp bên trái. Nói xong người phóng to trở lại.
+- **Zoom đúng chỗ đang nói:** mỗi ảnh là 1 dòng trong `SCREENS`, `keys` gán theo số cụm, toạ độ theo ảnh gốc; khung vàng làm tối xung quanh + nhãn chữ. Cụm `"_|n"` ẩn phụ đề, chia nhỏ để lấy mốc zoom.
+- **LUÔN che thông tin riêng** trong ảnh chụp bằng `blur` hoặc để ngoài vùng zoom: lịch sử chat, bookmark, tab trình duyệt, tên khách hàng, thư mục riêng.
+- **Đồ hoạ ngang** trong `GFX`: `GVS` (so 2 AI), `GSTEPS` (hàng bước), `GGRID` (4 ô), `GSOCIAL` (nền tảng), `GCTA` (kêu gọi lấy link).
+- **Icon:** để PNG nền trong suốt trong `icons\`. Tải SVG từ simple-icons / lucide rồi đổi bằng `doi_icon_png.py <thư mục icons>`. Skill không kèm logo, phải hỏi người dùng trước khi tải.
+- Quy trình giống reel: `go_bang.py` → `liet_ke.py` → soạn `du_an.py` → `soat_cum.py` → `ngang_engine.py --draft --list` → xem thử `--png` → nháp → bản chính.
+
 ## Phong cách đã chốt
 - 2 font: Inter Tight (mọi độ đậm) + Playfair Display Italic (thư mục `fonts\`). 3 màu: trắng, đen #0C0C0C, vàng #FFC400.
 - Chữ mảnh (Playfair) → hiện mờ + trôi lên + gạch chân vàng + sao lấp lánh. Chữ dày (Inter Black) → hộp vàng quét + bật nảy + rung. Chữ thường → nổi lên / trượt trái / trượt phải luân phiên.

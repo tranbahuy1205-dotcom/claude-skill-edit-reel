@@ -9,6 +9,7 @@
 - **Cảnh quay / ảnh của chính bạn:** chèn được với 9 kiểu đặt cảnh: toàn màn hình, chia đôi, thẻ nghiêng 3D, khung điện thoại, ảnh polaroid, nhãn dán, bong bóng mặt, dồn nhanh nhiều cảnh, chuỗi thẻ giữ nguyên khung (hợp với ảnh trước/sau). Tự chọn đoạn nét nhất, chỉnh màu cho khớp video chính.
 - **Âm thanh:** nhiều hiệu ứng tự tổng hợp, nhạc nền −15 dB so với giọng, cân âm chuẩn mạng xã hội −14 LUFS.
 - **Xuất file:** 1080×1920; có bản nháp 720p để duyệt trước.
+- **Video ngang kiểu hướng dẫn (mới):** gửi kèm ảnh chụp màn hình, Claude tự thu gọn bạn về góc phải, zoom ảnh vào đúng chỗ bạn đang nói, che thông tin riêng, thêm icon và đồ hoạ. Xuất 1920×1080.
 
 ![Thư viện mẫu minh hoạ 3D](mau-broll/_tat-ca.png)
 
